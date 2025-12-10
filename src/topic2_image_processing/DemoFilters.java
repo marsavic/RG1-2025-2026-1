@@ -10,12 +10,13 @@ import mars.drawingx.drawing.View;
 import mars.drawingx.gadgets.annotations.GadgetBoolean;
 import mars.drawingx.gadgets.annotations.GadgetInteger;
 import mars.geometry.Vector;
+import topic2_image_processing.filters.CombinedFilter;
 import topic2_image_processing.filters.ConvolutionFilter;
 import topic2_image_processing.filters.Filter;
 import topic2_image_processing.filters.color.*;
-import topic2_image_processing.filters.displacement.FlipHorizontal;
-import topic2_image_processing.filters.displacement.FlipVertical;
+import topic2_image_processing.filters.displacement.*;
 import topic2_image_processing.filters.misc.Sobel;
+import topic2_image_processing.filters.misc.Vignette;
 
 
 public class DemoFilters implements Drawing {
@@ -30,32 +31,31 @@ public class DemoFilters implements Drawing {
 	
 	
 	Filter[] filters = {			
-			new GrayscaleRGB(),
-			new GrayscaleHSB(),
-			new Invert(),
-			new Sepia(),
-			new Desaturate(0.6),
-//			new Saturate(0.5),
-			new Colorize(216, 0.5),
-//			new Accent(0),
+//			new GrayscaleRGB(),
+//			new GrayscaleHSB(),
+//			new Invert(),
+//			new Sepia(),
+//			new Desaturate(0.6),
+			new Saturate(0.5),
+//			new Colorize(216, 0.5),
+			new Accent(0),
 
-			new FlipHorizontal(),
-			new FlipVertical(),
-//			new Rotate180(),
-//			new Zoom(2.0),
-//			new Wave(5, 100),
+//			new FlipHorizontal(),
+//			new FlipVertical(),
+			new Rotate180(),
+			new Zoom(2.0),
+			new Wave(5, 100),
 			
-//			new Jitter(10.0),
-//			new Vignette(),
-			// ----
+			new Jitter(10.0),
+			new Vignette(),
 			
-//			new CombinedFilter(new Jitter(10), new ConvolutionFilter(ConvolutionFilter.BLUR_3x3)),
+			new CombinedFilter(new Jitter(10), new ConvolutionFilter(ConvolutionFilter.BLUR_3x3)),
 			
-			new ConvolutionFilter(ConvolutionFilter.BOX_BLUR_3x3),
-			new ConvolutionFilter(ConvolutionFilter.BLUR_5x5),
-			new ConvolutionFilter(ConvolutionFilter.SHARPEN),
-			new ConvolutionFilter(ConvolutionFilter.DETECT_EDGES),
-			new Sobel(),
+//			new ConvolutionFilter(ConvolutionFilter.BOX_BLUR_3x3),
+//			new ConvolutionFilter(ConvolutionFilter.BLUR_5x5),
+//			new ConvolutionFilter(ConvolutionFilter.SHARPEN),
+//			new ConvolutionFilter(ConvolutionFilter.DETECT_EDGES),
+//			new Sobel(),
 			
 //			new Lens(0.5),
 //			new Swirl(4.5, 0.015),

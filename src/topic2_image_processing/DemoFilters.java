@@ -44,8 +44,7 @@ public class DemoFilters implements Drawing {
 			new Rotate180(),
 			new Zoom(2.0),
 			new Wave(5, 100),
-			
-			// vežbe 3
+            
 			new Jitter(10.0),
 			new Vignette(),
 			// ----

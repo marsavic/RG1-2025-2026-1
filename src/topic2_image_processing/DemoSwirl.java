@@ -10,23 +10,26 @@ import mars.drawingx.drawing.View;
 import mars.drawingx.gadgets.annotations.GadgetDouble;
 import mars.drawingx.gadgets.annotations.GadgetImageChooser;
 import mars.geometry.Vector;
-import topic2_image_processing.filters.BinaryFilter;
-import topic2_image_processing.filters.binary.ChromaKey;
+import topic2_image_processing.filters.Filter;
+import topic2_image_processing.filters.displacement.Swirl;
 
 
-public class DemoChromaKey implements Drawing {
+public class DemoSwirl implements Drawing {
 	
 	@GadgetImageChooser
-	Image originalImage1, originalImage2;
-
-	@GadgetDouble(min = 0, max = 360)
-	double hue = 120;
+	Image originalImage;
 	
+	@GadgetDouble(min = 0, max = 16)
+	double f = 6;
+
+	@GadgetDouble(min = -1, max = 1)
+	double a = 0.012;
+
+
 	
 	@Override
 	public void init(View view) {
-		originalImage1 = new Image("images/meterologist.png");
-		originalImage2 = new Image("images/forecast.png");
+		originalImage = new Image("images/monalisa.png");
 	}
 	
 	
@@ -34,14 +37,9 @@ public class DemoChromaKey implements Drawing {
 	public void draw(View view) {
 		DrawingUtils.clear(view, Color.gray(0.2));
 
-		BinaryFilter filter = new ChromaKey(hue);
-		try {
-			Image filteredImage = filter.process(originalImage1, originalImage2);
-			view.drawImageCentered(Vector.ZERO, filteredImage);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			DrawingUtils.drawInfoText(view, e.toString());
-		}
+		Filter filter = new Swirl(f, a);
+		Image filteredImage = filter.process(originalImage);
+		view.drawImageCentered(Vector.ZERO, filteredImage);
 	}
 	
 	

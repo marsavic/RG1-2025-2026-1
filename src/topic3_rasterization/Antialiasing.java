@@ -90,54 +90,71 @@ public class Antialiasing implements Drawing {
 
     // Poluravan
     Predicate<Vector> halfPlane(double coefficient) {
-        return p -> false;
+        return p -> p.y-p.x * coefficient >= 0;
     }
 
 
     // Pravougaonik (axis-aligned) dimenzija axb
     Predicate<Vector> rectangle(double a, double b) {
-        return p -> false;
+        return p -> Math.abs(p.x) <= a/2 && Math.abs(p.y) <= b/2;
     }
 
 
     // Kvadrat rotiran za 45 stepeni, stranice s
     Predicate<Vector> rotatedSquare45(double s) {
         double h = s / Math.sqrt(2);
-        return p -> false;
+        return p -> (p.y <= p.x + h) && (p.y >= p.x - h)
+                && (p.y <= -p.x + h) && (p.y >= -p.x - h);
+    }
+
+
+    // Jednakokraki trougao s baznom stranicom duzine base i visinom h
+    Predicate<Vector> triangle(double base, double h) {
+        return p -> {
+            // Leva ivica
+            boolean left = p.y <= (2 * h / base) * (p.x + base / 2);
+
+            // Desna ivica
+            boolean right = p.y <= (2 * h / base) * (-p.x + base / 2);
+
+            // Donja stranica
+            boolean bottom = p.y >= 0;
+
+            return bottom && left && right;
+        };
     }
 
 
     // Kruznica
     Predicate<Vector> circle(double radius, double thickness) {
-        return p -> false;
+        return p -> Math.abs(p.norm() - radius) < thickness / 2.0;
     }
 
 
     // Grafik sinusoide
     Predicate<Vector> sineGraph() {
-        return p -> false;
-    }
-
-
-    // Wavy stripe
-    Predicate<Vector> wavyStripe() {
-        return p -> false;
+        return p -> Math.abs(p.y - 20 * Math.sin(p.x / 20)) <= 1;
     }
 
 
     // Elipsa
     Predicate<Vector> ellipse(double a, double b) {
-        return p -> false;
+        return p -> (p.x * p.x) / (a * a) + (p.y * p.y) / (b * b) <= 1;
     }
 
 
-    // Sahovska tabla - dimenzije polja dxd
+    // Sahovska tabla - dimenzije svakog polja dxd
     Predicate<Vector> chessboard(double d) {
         return p -> {
+            // Odredjujemo da li se x koordinata tacke nalazi u parnom ili neparnom bloku sirine d
+            boolean parx = Numeric.mod(p.x, 2 * d) < d;
 
+            // Analogno za y koordinatu
+            boolean pary = Numeric.mod(p.y, 2 * d) < d;
 
-
-            return false;
+            // XOR (^): daje 1 ako je tacka u blokovima iste parnosti po x i y koordinati,
+            // a 0 u suprotnom, sto daje naizmenicno obojena polja kao na sahovskoj tabli
+            return parx ^ pary;
         };
     }
 
@@ -145,10 +162,10 @@ public class Antialiasing implements Drawing {
     // Koncentricni krugovi
     Predicate<Vector> concentricCircles(double d) {
         return p -> {
-
-
-
-            return false;
+            int dist = (int) p.norm();
+            // Logika je slicna kao kod sahovske table, s tim da se posmatra samo jedan parametar,
+            // a to je udaljenost tacke od centra
+            return Numeric.mod(dist, 2*d) < d;
         };
     }
 
@@ -156,10 +173,9 @@ public class Antialiasing implements Drawing {
     // Srce
     Predicate<Vector> heart(double coefficient) {
         return p -> {
-
-
-
-            return false;
+            double x = p.x/coefficient;
+            double y = p.y/coefficient;
+            return Math.pow(x*x + y*y - 1, 3) - x*x*y*y*y <= 0;
         };
     }
 
@@ -173,7 +189,7 @@ public class Antialiasing implements Drawing {
         return p -> {
             double r = p.norm();
             double a = Math.atan2(p.y, p.x);
-            return r <= 80 * Math.cos(5 * a);
+            return r <= 40 * Math.cos(5 * a);
         };
     }
 
@@ -205,13 +221,17 @@ public class Antialiasing implements Drawing {
         view.setTransformation(camera.getTransformation());
         DrawingUtils.clear(view, Color.gray(0.125));
 
-        Image image = antialiasedShape(line45(2), 200, 200, subdivision);
+        //Za pokretanje odkomentarišete liniju koda koja poziva odgovarajuću funkciju
+
+//        Image image = antialiasedShape(line45(2), 200, 200, subdivision);
 
 //      Image image = antialiasedShape(halfPlane(0.173), 200, 200, subdivision);
 
 //      Image image = antialiasedShape(rectangle(200, 100), 250, 250, subdivision);
 
 //      Image image = antialiasedShape(rotatedSquare45(140), 200, 200, subdivision);
+
+        Image image = antialiasedShape(triangle(200, 100), 400, 400, subdivision);
 
 //		Image image = antialiasedShape(circle(100,3), 250, 250, subdivision);
 
@@ -226,7 +246,6 @@ public class Antialiasing implements Drawing {
 //      Image image = antialiasedShape(concentricCircles(10), 278, 278, subdivision);
 
 //      Image image = antialiasedShape(heart(80.0), 278, 278, subdivision);
-
 
 //      Image image = antialiasedShape(flower(), 278, 278, subdivision);
 

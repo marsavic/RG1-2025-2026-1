@@ -222,8 +222,9 @@ public class Antialiasing implements Drawing {
         DrawingUtils.clear(view, Color.gray(0.125));
 
         //Za pokretanje odkomentarišete liniju koda koja poziva odgovarajuću funkciju
+        //Zumirajte da vidite anti-aliasing efekat
 
-//        Image image = antialiasedShape(line45(2), 200, 200, subdivision);
+        Image image = antialiasedShape(line45(2), 200, 200, subdivision);
 
 //      Image image = antialiasedShape(halfPlane(0.173), 200, 200, subdivision);
 
@@ -231,7 +232,7 @@ public class Antialiasing implements Drawing {
 
 //      Image image = antialiasedShape(rotatedSquare45(140), 200, 200, subdivision);
 
-        Image image = antialiasedShape(triangle(200, 100), 400, 400, subdivision);
+//      Image image = antialiasedShape(triangle(200, 100), 400, 400, subdivision);
 
 //		Image image = antialiasedShape(circle(100,3), 250, 250, subdivision);
 

@@ -22,12 +22,19 @@ public class RegularPolygon implements Drawing {
 
 
 
+    Vector getVertex(int i) {                  // Vraca polozaj i-tog temena
+        return Vector.polar(r, alpha + 1.0 * i / n);
+    }
+
+
     @Override
     public void draw(View view) {
         DrawingUtils.clear(view, Color.hsb(0, 0, 0.2));
-
-        //TODO
-
+        view.setStroke(Color.WHITE);
+        view.setLineWidth(2);
+        for (int i = 0; i < n; i++) {
+            view.strokeLine(getVertex(i), getVertex(i+1));
+        }
     }
 
 

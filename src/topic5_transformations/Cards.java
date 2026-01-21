@@ -1,4 +1,4 @@
-package topic5_transformations;
+package topic4_transformations;
 
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
@@ -18,16 +18,30 @@ public class Cards implements Drawing {
     @GadgetInteger(min = 1, max = 16)
     int nCards = 6;
 
-    Vector size = new Vector(150, 200); // velicina karte
-    Vector a = new Vector(20, 20); // zakrivljenost ugla karte
+    Vector size = new Vector(150, 200);
+    Vector a = new Vector(20, 20);
 
-    double r = 48; // poluprecnik kruznice
+    double r = 48;
 
-    Vector d = new Vector(16, 16); // distnca izmedju dve karte
+    Vector d = new Vector(16, 16);
 
 
     void drawCard(View view) {
-        //TODO
+        // Okvir karte sa senkom
+
+        view.setFill(Color.WHITE);
+        view.setEffect(new DropShadow(32, Color.BLACK));          // Efekt se odnosi na svaki naredni iscrtani objekat sve dok ne postavimo efekt na null.
+        view.fillRoundRectCentered(Vector.ZERO, size.div(2), a);
+        view.setEffect(null);
+
+        // Simbol na karti
+
+        view.setLineCap(StrokeLineCap.BUTT);
+        view.setStroke(Color.hsb(0, 0.9, 0.9));
+        view.setLineWidth(16);
+
+        view.strokeLine(Vector.polar(r, 1.0 / 8), Vector.polar(r, 5.0 / 8));
+        view.strokeCircleCentered(Vector.ZERO, r);
     }
 
 
@@ -41,10 +55,11 @@ public class Cards implements Drawing {
         for (int i = nCards - 1; i >= 0; i--) {
             view.stateStore();
 
+            Transformation t = new Transformation()
+                    .rotate(0.01 * rng.nextGaussian())
+                    .translate(d.mul(i));
 
-            //TODO
-
-
+            view.addTransformation(t);
             drawCard(view);
 
             view.stateRestore();

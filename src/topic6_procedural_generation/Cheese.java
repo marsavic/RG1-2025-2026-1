@@ -1,4 +1,4 @@
-package topic5_procedural_generation;
+package topic6_procedural_generation;
 
 import java.util.ArrayList;
 import java.util.List;

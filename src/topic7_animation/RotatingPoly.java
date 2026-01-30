@@ -31,8 +31,20 @@ public class RotatingPoly implements Drawing {
     public void draw(View view) {
         DrawingUtils.clear(view, Color.hsb(0, 0, 0.1));
 
-        //TODO
 
+        double theta = omega * time;          // Ugao temena 0
+
+        Vector[] p = new Vector[n];
+        Vector[] q = new Vector[n];
+        for (int i = 0; i < n; i++) {
+            double phi = theta + 1.0 * i / n;
+            p[i] = Vector.polar(r, phi);
+            q[i] = Vector.polar(r, -phi);
+        }
+
+        view.setFill(Color.hsb(240, 0.7, 0.8));
+        view.fillPolygon(p);
+        view.fillPolygon(q);
     }
 
 
